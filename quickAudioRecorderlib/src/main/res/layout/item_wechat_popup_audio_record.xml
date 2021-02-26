@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioRecordViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/audioRecordViewGroup"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+   <!-- <WechatAudioRecordViewGroup
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </WechatAudioRecordViewGroup>-->
+
+    <!--<TextView
+        android:id="@+id/tv_cancel_tip"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_70"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textSize="@dimen/sp_14"
+        android:textColor="@color/white"
+        android:text="取消"
+        android:background="@drawable/rect_round_transparent_bg"/>-->
+
+    <cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioWaveView
+        android:id="@+id/wechatAudioWaveView"
+        android:layout_width="140dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="取消"/>
+
+    <TextView
+        android:id="@+id/tv_tip_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wechatAudioBottomLayout"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="松开发送"
+        android:textColor="@color/white"/>
+
+    <cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioBottomLayout
+        android:id="@+id/wechatAudioBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_audio_wechat_bottom"/>
+    </cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioBottomLayout>
+</cn.demomaster.quickaudiorecorderlib.view.wechat.WechatAudioRecordViewGroup>
