@@ -9,9 +9,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.lang.reflect.Field;
-
 import cn.demomaster.quickaudiorecorderlib.R;
-
 
 public class WechatAudioRecordPopup extends PopupWindow {
     private Activity mContext;
@@ -19,7 +17,6 @@ public class WechatAudioRecordPopup extends PopupWindow {
     public WechatAudioRecordPopup(Context context) {
         super(context);
         mContext = (Activity) context;
-        fitPopupWindowOverStatusBar(this,true);
         init();
     }
 
@@ -33,7 +30,6 @@ public class WechatAudioRecordPopup extends PopupWindow {
 
     /**
      * 获取要触摸的view
-     *
      * @return
      */
     public View getTouchableViewGroup() {
@@ -42,7 +38,6 @@ public class WechatAudioRecordPopup extends PopupWindow {
 
     //TextView tv_cancel_tip;
     WechatAudioWaveView wechatAudioWaveView;
-
     private void init() {
         View view = mContext.getLayoutInflater().inflate(R.layout.item_wechat_popup_audio_record,
                 null);
@@ -102,6 +97,7 @@ public class WechatAudioRecordPopup extends PopupWindow {
 
     @Override
     public void setContentView(View contentView) {
+        fitPopupWindowOverStatusBar(this, true);
         mContentView = contentView;
         super.setContentView(contentView);
     }
@@ -125,19 +121,25 @@ public class WechatAudioRecordPopup extends PopupWindow {
         this.onRecordListener = onRecordListener;
     }
 
-    public static interface OnRecordListener {
+    public interface OnRecordListener {
         //录音结束
         void onFinish();
 
         //录音取消
         void onCancel();
     }
+
     public static void fitPopupWindowOverStatusBar(PopupWindow mPopupWindow, boolean needFullScreen) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
-                Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
-                mLayoutInScreen.setAccessible(needFullScreen);
-                mLayoutInScreen.set(mPopupWindow, needFullScreen);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    mPopupWindow.setClippingEnabled(false);
+                    mPopupWindow.setIsLaidOutInScreen(true);
+                } else {
+                    Field mLayoutInScreen = PopupWindow.class.getDeclaredField("mLayoutInScreen");
+                    mLayoutInScreen.setAccessible(needFullScreen);
+                    mLayoutInScreen.set(mPopupWindow, needFullScreen);
+                }
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

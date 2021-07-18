@@ -8,10 +8,10 @@ import java.io.IOException;
  * @version V001R001C01B001
  */
 public class WaveHeader {
-    public final char fileID[] = {'R', 'I', 'F', 'F'};
+    public final char[] fileID = {'R', 'I', 'F', 'F'};
     public int fileLength;
-    public char wavTag[] = {'W', 'A', 'V', 'E'};;
-    public char FmtHdrID[] = {'f', 'm', 't', ' '};
+    public char[] wavTag = {'W', 'A', 'V', 'E'};
+    public char[] FmtHdrID = {'f', 'm', 't', ' '};
     public int FmtHdrLeth;
     public short FormatTag;
     public short Channels;
@@ -19,7 +19,7 @@ public class WaveHeader {
     public int AvgBytesPerSec;
     public short BlockAlign;
     public short BitsPerSample;
-    public char DataHdrID[] = {'d','a','t','a'};
+    public char[] DataHdrID = {'d','a','t','a'};
     public int DataHdrLeth;
 
     public byte[] getHeader() throws IOException {

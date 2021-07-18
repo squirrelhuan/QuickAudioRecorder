@@ -138,10 +138,10 @@ public class AudioRecorder {
         if (TextUtils.isEmpty(fileName)) {
             fileName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
         }
-
-        Log.d("AudioRecorder", "===startRecord===" + audioRecord.getState());
+        
+        Log.d("AudioRecorder", "startRecord：" + audioRecord.getState());
         audioRecord.startRecording();
-
+        
         if (mRecordStreamListener != null) {
             mRecordStreamListener.onStart();
         }
@@ -175,10 +175,29 @@ public class AudioRecorder {
         if (isStarted()) {
             audioRecord.stop();
             status = Status.STATUS_STOP;
-            release();
-            if (mRecordStreamListener != null) {
-                mRecordStreamListener.onStop();
+            //假如有暂停录音
+            List<String> filePaths = new ArrayList<>();
+            try {
+                if (filesName.size() > 0) {
+                    for (String fileName : filesName) {
+                        filePaths.add(fileOutputPath+"/pcm/"+fileName);
+                    }
+                    //清除
+                    filesName.clear();
+                }
+            } catch (IllegalStateException e) {
+                throw new IllegalStateException(e.getMessage());
             }
+
+            //将多个pcm文件转化为wav文件
+            mergePCMFilesToWAVFile(filePaths, new OnGenerateFileListener() {
+                @Override
+                public void onFinish(boolean isSuccess, String filePath) {
+                    if (mRecordStreamListener != null) {
+                        mRecordStreamListener.onStop(isSuccess,filePath);
+                    }
+                }
+            });
         }
     }
 
@@ -187,27 +206,6 @@ public class AudioRecorder {
      */
     public void release() {
         Log.d("AudioRecorder", "===release===");
-        //假如有暂停录音
-        try {
-            if (filesName.size() > 0) {
-                List<String> filePaths = new ArrayList<>();
-                for (String fileName : filesName) {
-                    filePaths.add(fileOutputPath+"/pcm/"+fileName);
-                }
-                //清除
-                filesName.clear();
-                //将多个pcm文件转化为wav文件
-                mergePCMFilesToWAVFile(filePaths);
-            } else {
-                //这里由于只要录音过filesName.size都会大于0,没录音时fileName为null
-                //会报空指针 NullPointerException
-                // 将单个pcm文件转化为wav文件
-                //Log.d("AudioRecorder", "=====makePCMFileToWAVFile======");
-                //makePCMFileToWAVFile();
-            }
-        } catch (IllegalStateException e) {
-            throw new IllegalStateException(e.getMessage());
-        }
 
         if (audioRecord != null) {
             audioRecord.release();
@@ -311,16 +309,25 @@ public class AudioRecorder {
      *
      * @param filePaths
      */
-    private void mergePCMFilesToWAVFile(final List<String> filePaths) {
+    private void mergePCMFilesToWAVFile(final List<String> filePaths,OnGenerateFileListener listener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean result = AudioUtil.mergePCMFilesToWAVFile(filePaths, fileOutputPath + "/wav/" + fileName + ".wav");
-                Log.e("AudioRecorder", "操作结果 :" + result + "," + filePaths);
+                String save = fileOutputPath + "/wav/" + fileName + ".wav";
+                boolean result = AudioUtil.mergePCMFilesToWAVFile(filePaths, save);
                 fileName = null;
+                if(listener!=null){
+                    Log.i("AudioRecorder", "录音结果 :" + result + "," + save);
+                    listener.onFinish(result,save);
+                }
             }
         }).start();
     }
+
+    public interface OnGenerateFileListener{
+        void onFinish(boolean isSuccess,String filePath);
+    }
+
 
     /**
      * 获取录音对象的状态
@@ -343,7 +350,7 @@ public class AudioRecorder {
     /**
      * 录音对象的状态
      */
-    public static enum Status {
+    public enum Status {
         //未开始
         STATUS_IDLE(0),
         //录音

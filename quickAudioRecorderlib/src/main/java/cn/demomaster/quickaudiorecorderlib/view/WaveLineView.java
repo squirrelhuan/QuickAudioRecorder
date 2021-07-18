@@ -56,7 +56,6 @@ public class WaveLineView extends RenderView {
     private int fineLineWidth=2;
 
     private final Paint paint = new Paint();
-
     {
         //防抖动
         paint.setDither(true);

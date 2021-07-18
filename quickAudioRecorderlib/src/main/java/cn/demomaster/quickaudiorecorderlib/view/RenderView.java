@@ -108,20 +108,16 @@ public abstract class RenderView extends SurfaceView implements SurfaceHolder.Ca
                 try {
                     Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                 }
             }
         }
-
-
+        
         public void setRun(boolean isRun) {
             this.running = isRun;
         }
-
     }
-
-
-
+    
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         renderer = onCreateRenderer();

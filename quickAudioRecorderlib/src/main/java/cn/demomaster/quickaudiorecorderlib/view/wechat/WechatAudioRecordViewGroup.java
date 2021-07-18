@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.Shader;
 import android.util.AttributeSet;
@@ -155,7 +154,7 @@ public class WechatAudioRecordViewGroup extends RelativeLayout {
         this.onTouchListener = onTouchListener;
     }
 
-    public static interface OnTouchListener{
+    public interface OnTouchListener{
         //触摸移动,悬停在某个子空间上
         void onHover(float x, float y,View view,boolean isSelected);
         //手指释放

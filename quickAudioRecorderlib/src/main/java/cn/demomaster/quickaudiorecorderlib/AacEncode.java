@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 public class AacEncode {
 
     private MediaCodec mediaCodec;
-    private String mediaType = "OMX.google.aac.encoder";
+    private final String mediaType = "OMX.google.aac.encoder";
     //解码后保存文件
     private File file;
     ByteBuffer[] inputBuffers = null;
@@ -39,12 +39,15 @@ public class AacEncode {
         File file = new File(outPath);
         try {
             encFi = new FileOutputStream(file);
-
         }catch (IOException e){
             e.printStackTrace();
         }
     }
 
+    // 设置音频采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
+    final int[] kSampleRates = {8000, 11025, 22050, 44100, 48000};
+    //比特率 声音中的比特率是指将模拟声音信号转换成数字声音信号后，单位时间内的二进制数据量，是间接衡量音频质量的一个指标
+    final int[] kBitRates = {64000, 96000, 128000};
     public void start(){
         try {
             mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_AUDIO_AAC);
@@ -53,11 +56,6 @@ public class AacEncode {
             e.printStackTrace();
         }
 
-        // 设置音频采样率，44100是目前的标准，但是某些设备仍然支持22050，16000，11025
-        final int kSampleRates[] = {8000, 11025, 22050, 44100, 48000};
-        //比特率 声音中的比特率是指将模拟声音信号转换成数字声音信号后，单位时间内的二进制数据量，是间接衡量音频质量的一个指标
-        final int kBitRates[] = {64000, 96000, 128000};
-    
         //初始化   此格式使用的音频编码技术、音频采样率、使用此格式的音频信道数（单声道为 1，立体声为 2）
         MediaFormat mediaFormat = MediaFormat.createAudioFormat(
                 MediaFormat.MIMETYPE_AUDIO_AAC, kSampleRates[3], 2);

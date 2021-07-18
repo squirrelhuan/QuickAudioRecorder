@@ -8,7 +8,7 @@ package cn.demomaster.quickaudiorecorderlib;
 public interface RecordStreamListener {
     void onStart();
     void onPause();
-    void onStop();
+    void onStop(boolean isSuccess, String filePath);
     void onRelease();
     void recordOfByte(byte[] data, int begin, int end);
 }

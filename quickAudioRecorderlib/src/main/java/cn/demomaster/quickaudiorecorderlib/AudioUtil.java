@@ -50,7 +50,6 @@ public class AudioUtil {
     public static boolean mergePCMFilesToWAVFile(List<String> filePathList,
                                                  String destinationPath) {
         File[] file = new File[filePathList.size()];
-        byte buffer[] = null;
 
         int TOTAL_SIZE = 0;
         int fileNum = filePathList.size();
@@ -99,7 +98,7 @@ public class AudioUtil {
         }
         //合成所有的pcm文件的数据，写到目标文件
         try {
-            buffer = new byte[1024 * 4]; // Length of All Files, Total Size
+            byte[] buffer = new byte[1024 * 4]; // Length of All Files, Total Size
             InputStream inStream = null;
             OutputStream ouStream = null;
 
@@ -136,7 +135,6 @@ public class AudioUtil {
      * @return
      */
     public static boolean makePCMFileToWAVFile(String pcmPath, String destinationPath, boolean deletePcmFile) {
-        byte buffer[] = null;
         int TOTAL_SIZE = 0;
         File file = new File(pcmPath);
         if (!file.exists()) {
@@ -175,7 +173,7 @@ public class AudioUtil {
 
         //合成所有的pcm文件的数据，写到目标文件
         try {
-            buffer = new byte[1024 * 4]; // Length of All Files, Total Size
+            byte[] buffer = new byte[1024 * 4]; // Length of All Files, Total Size
             InputStream inStream = null;
             OutputStream ouStream = null;
 

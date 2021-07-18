@@ -102,11 +102,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onStop() {
-            btn_start_record.setVisibility(View.VISIBLE);
-            btn_pause_record.setVisibility(View.GONE);
-            btn_stop_record.setVisibility(View.GONE);
-            waveLineView.stopAnim();
+        public void onStop(boolean isSuccess, String filePath) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btn_start_record.setVisibility(View.VISIBLE);
+                    btn_pause_record.setVisibility(View.GONE);
+                    btn_stop_record.setVisibility(View.GONE);
+                    waveLineView.stopAnim();
+                }
+            });
         }
 
         @Override
@@ -126,19 +131,17 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < data1.length; i += 60) {
                         waveView.addData(data1[i]);
                     }
-
                     count++;
                     long recordedTime = count * TIMER_INTERVAL;
-                    int volume = 0;
                     int volumeInterval = 200;
                     if (recordedTime >= volumeInterval && recordedTime % volumeInterval == 0) {
-                        volume = (AudioUtil.calculateVolume(data1));
+                        int volume = (AudioUtil.calculateVolume(data1));
                         double myVolume = (volume - 40) * 4;
                         waveLineView.setVolume((int) myVolume);
                         if(pop!=null) {
                             pop.setVolume(Math.max(0,volume-40));
                         }
-                        Log.d("MainActivity", "current volume is " + volume);
+                        //Log.d("MainActivity", "current volume is " + volume);
                     }
                 }
             });

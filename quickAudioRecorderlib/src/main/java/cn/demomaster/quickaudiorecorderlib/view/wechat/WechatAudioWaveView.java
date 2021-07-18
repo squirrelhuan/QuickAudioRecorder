@@ -116,8 +116,7 @@ public class WechatAudioWaveView extends TextView {
         for(double value:data){
             min += value;
         }
-        double avg = min/data.size();
-        return avg;
+        return min/data.size();
     }
 
     private double getData(int i) {
@@ -134,8 +133,7 @@ public class WechatAudioWaveView extends TextView {
         if(data.size()>count){
             data.remove(0);
         }
-        double d= value;
-        data.add(d);
+        data.add(value);
         /*if (d > max) {
             max = getAvgValueData();
         }*/

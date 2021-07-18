@@ -1,10 +1,7 @@
 package cn.demomaster.quickaudiorecorderlib.util;
 
+import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.util.TypedValue;
-
-import java.lang.reflect.Field;
 
 /**
  * @author squirrel桓
@@ -103,7 +100,13 @@ public class DisplayUtil {
     public static int getScreenHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }
-
+    /**
+     * 获取屏幕高度(px)
+     */
+    public static int getScreenHeight(Activity context) {
+        int height = context.getWindow().getDecorView().getMeasuredHeight();
+        return Math.max(height,context.getResources().getDisplayMetrics().heightPixels);
+    }
     /**
      * 获取屏幕宽度(px)
      */
